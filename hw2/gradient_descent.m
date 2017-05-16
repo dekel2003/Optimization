@@ -8,8 +8,8 @@ while (sqrt(sum(grad_f(x).^2)) >= epsilon)
     iteration = iteration+1;
     alpha = armijo(f, -(grad_f(x)), x, alpha, beta, sigma);
     x = x - alpha * (grad_f(x));
-    disp(norm(grad_f(x)));
-    disp([grad_f(x) x]);
+%     disp(norm(grad_f(x)));
+%     disp([grad_f(x) x]);
     values(iteration) = f(x) - f(optimal_val);
 end
 

@@ -14,7 +14,7 @@ while (norm(grad_f(x)) >= epsilon)
 end
 
 semilogy(values)
-title('gradient descent');
+title('newton method');
 xlabel('iteration') % x-axis label
 ylabel('f(x)-p*') % y-axis label
 
