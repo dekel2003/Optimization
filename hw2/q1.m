@@ -37,3 +37,5 @@ g3 = @(x) 2*A*x + b;
 x0 = (1:N)';
 optimal_val = ones(N,1)*2; optimal_val(1)=0.02; optimal_val(2)=200;
 gradient_descent( f3, g3, x0, alpha0, beta, sigma, epsilon, optimal_val )
+
+

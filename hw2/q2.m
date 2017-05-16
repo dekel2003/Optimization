@@ -30,6 +30,13 @@ x0 = (1:N)';
 optimal_val = ones(N,1)*2; optimal_val(1)=1;
 newton_method( f2, g2, H2, x0, alpha0, beta, sigma, epsilon, optimal_val )
 
+%% check numerically
+
+par.EPSILON = eps^(1/3) * max(abs(x0));
+[gnum,Hnum] = numdiff(f2,g2,x0,par);
+plot(abs(gnum-g2(x0)),'*r');
+imagesc(abs(Hnum-H2(x0)));
+
 %% ill conditioned function
 alpha0 = pi/10;
 N=10;
