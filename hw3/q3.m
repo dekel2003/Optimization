@@ -28,9 +28,9 @@ b3 = 0;
 
 CSWB = [W1(:);W2(:);W3(:);b1(:);b2(:);b3(:)];
 [ objective, gradients ] = network_target_func( X_train, CSWB );
-alpha0 = 0.01;
+alpha0 = 0.1;
 beta = 0.5;
-sigma = 0.2;
+sigma = 0.1;
 epsilon = 1e-5;
 
 %% wrap and run
@@ -40,6 +40,12 @@ B0 = eye(length(gradients));
 x0 = CSWB;
 target_func = @(x) network_target_func(X_train, x);
 [ min_x, m ] = quasi_newton_method2( target_func, B0, x0, alpha0, beta, sigma, epsilon );
+
+%% plot convergence curve
+semilogy(m);
+title('quasi-newton method');
+xlabel('iteration') % x-axis label
+ylabel('Error') % y-axis label
 
 %% fit test
 network_reconstruction = use_network( X_test, min_x );

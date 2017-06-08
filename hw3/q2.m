@@ -14,7 +14,7 @@ optimal_val = ones(N,1);
 [x,m] = quasi_newton_method( f, grad_f, eye(N), x0, alpha0, beta, sigma, epsilon);
 
 semilogy(m - f(optimal_val));
-title('newton method');
+title('quasi-newton method');
 xlabel('iteration') % x-axis label
 ylabel('f(x)-p*') % y-axis label
 
