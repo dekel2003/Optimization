@@ -13,13 +13,14 @@ while (norm(grad_f_x_next) >= epsilon)
     x_next = x + alpha * direction;
     [~,grad_f_x_next] = f_and_grad_f(x_next);
     direction = normc(direction);
-    if direction' *  grad_f_x_next > direction' *  grad_f_x * 0.94
+    if direction' *  grad_f_x_next > direction' *  grad_f_x * 0.9
         B = update_approx_inverse_hessian(B, x_next - x, grad_f_x_next - grad_f_x);
     end
     x = x_next;
     disp(norm(grad_f_x_next));
 %     disp([grad_f(x) x]);
     values(iteration) = f_and_grad_f(x);
+    disp(values(iteration));
     if (alpha < eps / 10)
         disp('step size got too small... finish this run');
         break;
@@ -39,7 +40,7 @@ function dir = get_newton_direction(H_inv, grad_f_x)
     dir = - H_inv * grad_f_x;
 end
 
-function alpha_new = armijo(f_and_grad_f, direction, x, alpha, beta, sigma)
+function alpha_new = armijo2(f_and_grad_f, direction, x, alpha, beta, sigma)
     m = sum(direction .* normc(direction));
     t = -sigma * m;
     alpha_new = alpha;
@@ -47,6 +48,15 @@ function alpha_new = armijo(f_and_grad_f, direction, x, alpha, beta, sigma)
         alpha_new = alpha_new * beta;
     end
 %     if (f_and_grad_f(x) < f_and_grad_f(x + alpha_new*direction))
+end
+
+function alpha_new = armijo(f, direction, x, alpha, beta, sigma)
+    m = sum(direction .* normc(direction));
+    t = -sigma * m;
+    alpha_new = alpha;
+    if (f(x) - f(x + alpha_new*direction)) < alpha_new*t
+        alpha_new = alpha_new * beta;
+    end
 end
 
 function B = update_approx_inverse_hessian(B, p, q)

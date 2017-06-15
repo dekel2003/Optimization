@@ -27,18 +27,17 @@ b2 = [0 0 0]';
 b3 = 0;
 
 CSWB = [W1(:);W2(:);W3(:);b1(:);b2(:);b3(:)];
-[ objective, gradients ] = network_target_func( X_train, CSWB );
-alpha0 = 0.1;
+[ ~, gradients ] = network_target_func( X_train, CSWB );
+alpha0 = 1;
 beta = 0.5;
-sigma = 0.1;
-epsilon = 1e-5;
-
+sigma = 0.25;
+epsilon = 1e-3;
+target_func = @(x) network_target_func(X_train, x);
 %% wrap and run
 % f = objective;
 % grad_f = gradients;
 B0 = eye(length(gradients));
 x0 = CSWB;
-target_func = @(x) network_target_func(X_train, x);
 [ min_x, m ] = quasi_newton_method2( target_func, B0, x0, alpha0, beta, sigma, epsilon );
 
 %% plot convergence curve
@@ -55,7 +54,9 @@ plot( f, [X_test(1,:)', X_test(2,:)'], network_reconstruction)
 
 %% compare with fminunc
 
-options = optimoptions('fminunc','Algorithm','quasi-newton','SpecifyObjectiveGradient',true);
+options = optimoptions('fminunc','Algorithm','quasi-newton',...
+    'SpecifyObjectiveGradient',true);
+% options = optimoptions('fminunc','Algorithm','quasi-newton');
 [x,fval] = fminunc(target_func,x0,options);
 
 %% fminunc fit test
@@ -65,6 +66,12 @@ f = fit([X_test(1,:)', X_test(2,:)'], network_reconstruction,'linearinterp');
 plot( f, [X_test(1,:)', X_test(2,:)'], network_reconstruction)
 
 
+%%
+plot(Y_test' - network_reconstruction)
 
-
+%%
+[ objective, gradients ] = network_target_func( X_train, CSWB );
+gnum = numdiff(target_func,CSWB);
+e = gradients - gnum;
+plot(e, '*');
 
