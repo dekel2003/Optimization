@@ -37,4 +37,13 @@ x_opt = [2/3 2/3]';
 %% analytic calculation of lambda using KKT
 lambda_opt = [16+1/3 17]';
 
+%% preprocess augmented lagrangian
+x0 = [0 0]';
+f = @(x) 0.5*x'*Q*x -  d'*x + e;
+grad_f = @(x) Q*x - d;
+H_f = @(x) Q;
+g = @(x) A*x - b;
+grad_g = @(x) A;
 
+%% run augmented lagrangian
+x_star = augmented_lagrangian( x0, f, grad_f, H_f, g, grad_g );
