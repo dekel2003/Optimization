@@ -1,16 +1,4 @@
 
-
-%% define function and constraints
-f = @(x,y) x.*exp(-x.^2-y.^2)+(x.^2+y.^2)/20;
-g = @(x,y) x.*y/2+(x+2).^2+(y-2).^2/2-2;
-fimplicit(g)
-axis([-6 0 -1 7])
-hold on
-fcontour(f)
-plot(-.9727,.4685,'ro');
-legend('constraint','f contours');
-hold off
-
 %% define function and constraints
 Q = [4 0;0 2];
 d = [20 2]';
@@ -35,7 +23,7 @@ hold off
 x_opt = [2/3 2/3]';
 
 %% analytic calculation of lambda using KKT
-lambda_opt = [16+1/3 17]';
+lambda_opt = [12 11+1/3]';
 
 %% preprocess augmented lagrangian
 x0 = [0 0]';

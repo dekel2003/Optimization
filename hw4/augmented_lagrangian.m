@@ -8,7 +8,6 @@ meu = 0.5 * ones(numel(g(x0)),1);
 
 F =      @(x) f(x) +     (meu'/p) * phi(p*g(x))                   ;
 grad_F = @(x) grad_f(x) + grad_g(x)' * (meu .* grad_phi(p*g(x)))  ;
-% H_F =    @(t) H_f(t) + meu' * p * grad_g(t)' * repmat(H_phi(g(t)),1,numel(g(t))) * grad_g(t);
 H_F = @(x) H_f(x) + grad_g(x)' * p*meu * H_phi(p*g(x))' * grad_g(x);
 
 
@@ -20,6 +19,7 @@ epsilon = 1e-5;
 x = newton_method( F, grad_F, H_F, x0, alpha0, beta, sigma, epsilon );
 while abs(f(x) - f(x_star)) > epsilon
     meu = meu .* grad_phi(p*g(x));
+    disp(meu);
     if p < p_max
         p = alpha * p;
         meu = meu / alpha;
@@ -30,7 +30,8 @@ while abs(f(x) - f(x_star)) > epsilon
     H_F = @(x) H_f(x) + grad_g(x)' * meu * H_phi(g(x))' * grad_g(x);
 
     x = newton_method( F, grad_F, H_F, x_star, alpha0, beta, sigma, epsilon );
-    disp(x);
+%     disp(x);
+
 end
 
 
