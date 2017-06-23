@@ -23,7 +23,7 @@ hold off
 x_opt = [2/3 2/3]';
 
 %% analytic calculation of lambda using KKT
-lambda_opt = [12 11+1/3]';
+lambda_opt = [12 11+1/3 0]';
 
 %% preprocess augmented lagrangian
 x0 = [0 0]';
